@@ -1,0 +1,70 @@
+import matplotlib.pyplot as plt
+import random
+import numpy as np
+import math
+
+# Z contains random numbers generated using Box-Muller Method corresponding to N(0,1)
+Z= []
+NoOfValues= [100, 10000]
+Mean= []
+Variance= []
+
+for j in NoOfValues:
+
+    for i in range(0,j/2):
+        U1= random.random()
+        U2= random.random()
+        R= -2*math.log(U1)
+        V= 2*math.pi*U2
+        Z1= math.sqrt(R)*math.cos(V)
+        Z2= math.sqrt(R)*math.sin(V)
+
+        Z.append(Z1)
+        Z.append(Z2)
+
+    mean= sum(Z) / len(Z)
+    variance= sum((k - mean) ** 2 for k in Z) / len(Z)
+    
+    Mean.append(mean)
+    Variance.append(variance)
+    plt.hist(Z, bins = 100, rwidth = 0.5, label= "Obtained density")
+    plt.xlabel("Random Value generated", size=20)
+    plt.ylabel("Frequency", size=20)
+    plt.title("Generating Random Numbers using Box-Muller method having distribution N(0,5)", size=20)
+    plt.show()
+
+    # Now for N(0,5)
+    Z1= []
+    for i in Z:
+        Z1.append(0+math.sqrt(5)*i)
+    plt.hist(Z1, bins = 100, rwidth = 0.5, label= "Obtained density")
+    plt.xlabel("Random Value generated", size=20)
+    plt.ylabel("Frequency", size=20)
+    plt.title("Generating Random Numbers using Box-Muller method having distribution N(0,5)", size=20)
+    plt.show()
+
+    # Now for N(5,5)
+    Z2= []
+    for i in Z:
+        Z2.append(5+math.sqrt(5)*i)
+    plt.hist(Z2, bins = 100, rwidth = 0.5, label= "Obtained density")
+    plt.xlabel("Random Value generated", size=20)
+    plt.ylabel("Frequency", size=20)
+    plt.title("Generating Random Numbers using Box-Muller method having distribution N(5,5)", size=20)
+    plt.show()
+
+
+
+
+
+"""    x1,x2,x3= plt.hist(X, bins = 100, rwidth = 0.5, label= "Obtained density")
+    y= []
+    for x in x2:
+        f= beta.pdf(x, alpha1[i], alpha2[i])
+        y.append((f*1.00*max(x1/c[i]))) 
+    
+    plt.plot(x2,y, label= "Actual Density")
+    plt.legend()
+    plt.show()
+
+"""

@@ -1,0 +1,62 @@
+# use python 180123060_Jatin_q2.py to run this code
+
+import matplotlib.pyplot as plt
+import random
+import numpy as np
+
+# function defined which returns bool whether to accept or reject a given random variable
+def accept(x,c):
+    f= pmf[x-1]
+    f= f*10
+    u= random.random()
+    if(u<=f/c):
+        return 1
+    else:
+        return 0
+
+c_val= [5, 10]              # Random values of c taken for thi question
+MeanNoOfIterations= []      # Used for storing mean number of iterations in each case.
+
+pmf= [0.11, 0.12, 0.09, 0.08, 0.12, 0.10, 0.09, 0.09, 0.10, 0.10]
+cpmf= [0]               # Cumulative probability mass function
+for i in range(0,10):
+    cpmf.append(cpmf[i]+pmf[i])
+
+for c in c_val:
+    XAxis= []
+    Freq= []
+    for i in range(0,10):
+        XAxis.append(i+1)
+        Freq.append(0)
+    
+    iterations= []
+    for i in range(0,100000):
+        count= 0
+        while(1):
+            count += 1
+            x= random.random()
+            x= int(x*10)+1
+            if(accept(x,c)):
+                iterations.append(count)
+                Freq[x-1]+=1
+                break
+    
+    for i in range(0,10):
+        Freq[i]= (Freq[i]*1.00)/100000.00
+
+    plt.plot(XAxis, Freq, label="Obtained Frequency(Scaled)")
+    plt.plot(XAxis, pmf, label="Actual")
+    plt.xlabel('Discrete Values', size=20)
+    plt.ylabel('Probability', size=20)
+    plt.title("Generating Discrete Variables for c= "+str(c),size= 20)
+    plt.legend()
+    plt.show()
+
+    MeanNoOfIterations.append(np.mean(iterations))
+    
+
+    
+       
+print("Value of c      Mean number of iterations")
+print("%5f        %f"%(c_val[0],MeanNoOfIterations[0]))
+print("%5f        %f"%(c_val[1],MeanNoOfIterations[1]))
